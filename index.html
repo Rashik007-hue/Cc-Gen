@@ -1,19 +1,4 @@
-tion">
-                    <div class="stat-box">
-                        <div class="stat-title">Total Cards</div>
-                        <div class="stat-value" id="totalValue">0</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-title">Live</div>
-                        <div class="stat-value" id="liveValue">0</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-title">Dead</div>
-                        <div class="stat-value" id="deadValue">0</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-title">Unknown</div>
-                        <div class="stat-value" id="unknownValue">0</div>
+                <div class="stat-value" id="deadValue">0</div>
                     </div>
                     <div class="stat-box">
                         <div class="stat-title">Checked</div>
@@ -35,11 +20,22 @@ tion">
                         </div>
                     </div>
                 </div>
+                
+                <div class="stats-section">
+                    <div class="stat-box">
+                        <div class="stat-title">Remaining</div>
+                        <div class="stat-value" id="remainingValue">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-title">Unknown</div>
+                        <div class="stat-value" id="unknownValue">0</div>
+                    </div>
+                </div>
             </div>
         </div>
         
         <footer>
-            <p>© 2023 T.H.B Team - Secure Credit Card Validation System | For authorized use only</p>
+            <p>© 2023 T.H.B Team - Secure Credit Card Validation System</p>
         </footer>
     </div>
 
@@ -56,6 +52,7 @@ tion">
             const cardInput = document.getElementById('creditCardInput');
             cards = cardInput.value.split('\n').filter(line => line.trim() !== '');
             document.getElementById('totalValue').textContent = cards.length;
+            document.getElementById('remainingValue').textContent = cards.length;
         }
         
         function validateCard(card) {
@@ -84,11 +81,11 @@ tion">
             
             // Check if the card has the correct format
             const parts = card.split('|');
-            if (parts.length !== 4) {
+            if (parts.length < 3) {
                 return {status: 'unknown', error: "Invalid format"};
             }
             
-            const [number, month, year, cvv] = parts.map(part => part.trim());
+            const number = parts[0].trim();
             
             // Remove any non-digit characters from card number
             const cleanNumber = number.replace(/\D/g, '');
@@ -132,6 +129,7 @@ tion">
             document.getElementById('deadValue').textContent = '0';
             document.getElementById('unknownValue').textContent = '0';
             document.getElementById('checkedValue').textContent = '0';
+            document.getElementById('remainingValue').textContent = cards.length;
             
             checkInterval = setInterval(() => {
                 if (checkedCount >= cards.length) {
@@ -197,7 +195,8 @@ tion">
                 document.getElementById('liveValue').textContent = liveCount;
                 document.getElementById('deadValue').textContent = deadCount;
                 document.getElementById('unknownValue').textContent = unknownCount;
-            }, 1200);
+                document.getElementById('remainingValue').textContent = cards.length - checkedCount;
+            }, 1000);
         }
         
         function stopChecking() {
@@ -228,15 +227,14 @@ tion">
             updateCardCount();
             
             // Add example cards
-            cardInput.value = `5154620036341079|06|30|124
-5154627890519864|06|2026|072
+            cardInput.value = `5154627890519864|06|2026|072
 515462735076414|07|2028|511
-53737`;
+5154620036341079|06|30|124`;
             updateCardCount();
         });
     </script>
 </body>
-    </html>
+  </html>
 <!DOCTYPE html>
 <html lang="en">
 <head>
