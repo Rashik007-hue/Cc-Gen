@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T.H.B Team Credit Card Checker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        header h1 {
+            color: white;
+            font-size: 32px;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        header p {
+            color: #f8f8f8;
+            font-size: 16px;
+        }
+        
+        .logo {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: gold;
+        }
+        
+        .main-content {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .input-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .results-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .card {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .section-title {
+            color: white;
+            margin-bottom: 15px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+            color: #fdbb2d;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 250px;
+            padding: 15px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #fdbb2d;
+            font-family: monospace;
+            resize: vertical;
+            font-size: 16px;
+        }
+        
+        .input-note {
+            color: #f8f8f8;
+            margin-top: 10px;
+            font-size: 14px;
+            text-align: center;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .check-btn {
+            background: linear-gradient(to right, #1a2a6c, #b21f1f);
+            color: white;
+        }
+        
+        .stop-btn {
+            background: linear-gradient(to right, #b21f1f, #1a2a6c);
+            color: white;
+        }
+        
+        .clear-btn {
+            background: linear-gradient(to right, #fdbb2d, #b21f1f);
+            color: white;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .stats-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-box {
+            flex: 1;
+            min-width: 120px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-title {
+            color: #fdbb2d;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .stat-value {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .result-content {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 8px;
+            min-height: 200px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 15px;
+        }
+        
+        .result-item {
+            padding: 8px 10px;
+            margin-bottom: 8px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .status-live {
+            background: rgba(76, 175, 80, 0.2);
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .status-dead {
+            background: rgba(244, 67, 54, 0.2);
+            border-left: 4px solid #F44336;
+        }
+        
+        .status-unknown {
+            background: rgba(255, 193, 7, 0.2);
+            border-left: 4px solid #FFC107;
+        }
+        
+        .status-light {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .light-live {
+            background: #4CAF50;
+        }
+        
+        .light-dead {
+            background: #F44336;
+        }
+        
+        .light-unknown {
+            background: #FFC107;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 25px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-credit-card"></i>
+            </div>
+            <h1>T.H.B Team Credit Card Checker</h1>
+            <p>All in One - Secure Credit Card Validation System</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="input-section">
+                <div class="card">
+                    <div class="section-title">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Add your Credit Card numbers:</span>
+                    </div>
+                    <textarea id="creditCardInput" placeholder="Enter credit cards in format: NUMBER|MM|YYYY|CVV&#10;Example:&#10;5154627890519864|06|2026|072&#10;515462735076414|07|2028|511"></textarea>
+                    <p class="input-note">Enter one credit card per line</p>
+                    
+                    <div class="button-group">
+                        <button class="action-btn check-btn" onclick="startChecking()">
+                            <i class="fas fa-play"></i> Check Cards
+                        </button>
+                        <button class="action-btn stop-btn" onclick="stopChecking()">
+                            <i class="fas fa-stop"></i> Stop Checking
+                        </button>
+                        <button class="action-btn clear-btn" onclick="clearInput()">
+                            <i class="fas fa-trash"></i> Clear All
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="stats-section">
+                    <div class="stat-box">
+                        <div class="stat-title">Total Cards</div>
+                        <div class="stat-value" id="totalValue">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-title">Live</div>
+                        <div class="stat-value" id="liveValue">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-title">Dead</div>
+                        <div class="stat-value" id="deadValue">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-title">Checked</div>
+                        <div class="stat-value" id="checkedValue">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-title">Remaining</div>
+                        <div class="stat-value" id="remainingValue">0</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="results-section">
+                <div class="card">
+                    <div class="section-title">
+                        <i class="fas fa-list"></i>
+                        <span>Checking Results</span>
+                    </div>
+                    <div class="result-content" id="resultOutput">
+                        <div class="result-item status-unknown">
+                            <span class="status-light light-unknown"></span>
+                            Ready to check cards...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 T.H.B Team - Secure Credit Card Validation System | For authorized use only</p>
+        </footer>
+    </div>
+
+    <script>
+        let isChecking = false;
+        let checkInterval;
+        let cards = [];
+        let checkedCount = 0;
+        let liveCount = 0;
+        let deadCount = 0;
+        
+        function updateCardCount() {
+            const cardInput = document.getElementById('creditCardInput');
+            cards = cardInput.value.split('\n').filter(line => line.trim() !== '');
+            document.getElementById('totalValue').textContent = cards.length;
+            document.getElementById('remainingValue').textContent = cards.length;
+        }
+        
+        function startChecking() {
+            if (isChecking) return;
+            
+            const cardInput = document.getElementById('creditCardInput');
+            cards = cardInput.value.split('\n').filter(line => line.trim() !== '');
+            
+            if (cards.length === 0) {
+                alert('Please enter at least one credit card to check!');
+                return;
+            }
+            
+            isChecking = true;
+            checkedCount = 0;
+            liveCount = 0;
+            deadCount = 0;
+            
+            document.getElementById('resultOutput').innerHTML = '';
+            document.getElementById('liveValue').textContent = '0';
+            document.getElementById('deadValue').textContent = '0';
+            document.getElementById('checkedValue').textContent = '0';
+            document.getElementById('remainingValue').textContent = cards.length;
+            
+            checkInterval = setInterval(() => {
+                if (checkedCount >= cards.length) {
+                    stopChecking();
+                    return;
+                }
+                
+                // Simulate checking - in a real system, this would be an API call
+                const card = cards[checkedCount];
+                const isValid = Math.random() > 0.6; // 40% chance of being dead
+                
+                let status, statusClass, lightClass;
+                if (isValid) {
+                    status = 'LIVE';
+                    statusClass = 'status-live';
+                    lightClass = 'light-live';
+                    liveCount++;
+                } else {
+                    status = 'DEAD';
+                    statusClass = 'status-dead';
+                    lightClass = 'light-dead';
+                    deadCount++;
+                }
+                
+                // Add result to output
+                const resultOutput = document.getElementById('resultOutput');
+                resultOutput.innerHTML += `
+                    <div class="result-item ${statusClass}">
+                        <span class="status-light ${lightClass}"></span>
+                        ${card} - ${status}
+                    </div>
+                `;
+                resultOutput.scrollTop = resultOutput.scrollHeight;
+                
+                // Update counters
+                checkedCount++;
+                document.getElementById('checkedValue').textContent = checkedCount;
+                document.getElementById('liveValue').textContent = liveCount;
+                document.getElementById('deadValue').textContent = deadCount;
+                document.getElementById('remainingValue').textContent = cards.length - checkedCount;
+            }, 1500);
+        }
+        
+        function stopChecking() {
+            isChecking = false;
+            clearInterval(checkInterval);
+        }
+        
+        function clearInput() {
+            stopChecking();
+            document.getElementById('creditCardInput').value = '';
+            document.getElementById('resultOutput').innerHTML = `
+                <div class="result-item status-unknown">
+                    <span class="status-light light-unknown"></span>
+                    Ready to check cards...
+                </div>
+            `;
+            updateCardCount();
+            document.getElementById('liveValue').textContent = '0';
+            document.getElementById('deadValue').textContent = '0';
+            document.getElementById('checkedValue').textContent = '0';
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            const cardInput = document.getElementById('creditCardInput');
+            cardInput.addEventListener('input', updateCardCount);
+            updateCardCount();
+        });
+    </script>
+</body>
+</html>
